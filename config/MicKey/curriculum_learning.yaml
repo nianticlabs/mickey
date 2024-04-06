@@ -1,0 +1,97 @@
+
+MODEL: 'MicKey'
+DEBUG: False
+MICKEY:
+  DINOV2:
+    DOWN_FACTOR: 14
+    CHANNEL_DIM: 1024
+    FLOAT16: True
+
+  KP_HEADS:
+    BLOCKS_DIM: [512, 256, 128, 64]
+    BN: True
+    USE_SOFTMAX: True
+    USE_DEPTHSIGMOID: False
+    MAX_DEPTH: 60
+    POS_ENCODING: True
+
+  DSC_HEAD:
+    LAST_DIM: 128
+    BLOCKS_DIM: [512, 256, 128]
+    BN: True
+    NORM_DSC: True
+    POS_ENCODING: True
+
+FEATURE_MATCHER:
+  TYPE: 'DualSoftmax'
+  DUAL_SOFTMAX:
+    TEMPERATURE: 0.1
+    USE_DUSTBIN: True
+  SINKHORN:
+    NUM_IT: 10
+    DUSTBIN_SCORE_INIT: 1.
+  USE_TRANSFORMER: False
+
+TRAINING:
+  NUM_GPUS: 4
+  BATCH_SIZE: 12 # BS for each dataloader (in every GPU)
+  NUM_WORKERS: 8
+  SAMPLER: 'scene_balance'
+  N_SAMPLES_SCENE: 100
+  SAMPLE_WITH_REPLACEMENT: True
+  LR: 1e-4
+  LOG_INTERVAL: 50
+  VAL_INTERVAL: 0.5
+  VAL_BATCHES: 100
+  EPOCHS: 100
+
+DATASET:
+  HEIGHT: 720
+  WIDTH: 540
+
+  MIN_OVERLAP_SCORE: 0.0  # [train only] discard data with overlap_score < min_overlap_score
+  MAX_OVERLAP_SCORE: 1.0  # [train only] discard data with overlap_score < min_overlap_score
+
+LOSS_CLASS:
+
+  LOSS_FUNCTION: "VCRE" # VCRE or POSE_ERR
+  SOFT_CLIPPING: True # It indicates if it soft-clips the loss values.
+
+  POSE_ERR:
+    MAX_LOSS_VALUE: 1.5
+    MAX_LOSS_SOFTVALUE: 0.8
+  VCRE:
+    MAX_LOSS_VALUE: 90
+    MAX_LOSS_SOFTVALUE: 0.8
+
+  GENERATE_HYPOTHESES:
+    SCORE_TEMPERATURE: 20
+    IT_MATCHES: 20
+    IT_RANSAC: 20
+    INLIER_3D_TH: 0.3
+    INLIER_REF_TH: 0.15
+    NUM_REF_STEPS: 4
+    NUM_CORR_3d3d: 8 # Bigger number of 3d-3d correspondences helps stability
+
+  NULL_HYPOTHESIS:
+    ADD_NULL_HYPOTHESIS: True
+    TH_OUTLIERS: 0.35
+
+  CURRICULUM_LEARNING:
+    TRAIN_CURRICULUM: True # It indicates if MicKey should be trained with curriculum learning
+    TRAIN_WITH_TOPK: True # It indicates if MicKey should be trained only with top image pairs
+    TOPK_INIT: 30
+    TOPK: 80
+
+  SAMPLER:
+    NUM_SAMPLES_MATCHES: 512
+
+PROCRUSTES:
+  IT_MATCHES: 20
+  IT_RANSAC: 100
+  NUM_SAMPLED_MATCHES: 2048
+  NUM_CORR_3D_3D: 3
+  NUM_REFINEMENTS: 4
+  TH_INLIER: 0.15
+  TH_SOFT_INLIER: 0.3
+

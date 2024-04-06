@@ -1,0 +1,10 @@
+DATASET:
+  DATA_SOURCE: 'MapFree'
+  DATA_ROOT: 'data/'
+  SCENES: None  # should be a list [] or None. If none, use all scenes.
+  AUGMENTATION_TYPE: None
+  HEIGHT: 720
+  WIDTH: 540
+  MIN_OVERLAP_SCORE: 0.2  # [train only] discard data with overlap_score < min_overlap_score
+  MAX_OVERLAP_SCORE: 0.7  # [train only] discard data with overlap_score < min_overlap_score
+  SEED: 66
