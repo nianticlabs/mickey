@@ -7,7 +7,7 @@
     ·
     <a href="https://www.robots.ox.ac.uk/~victor/">Victor Adrian Prisacariu</a>
     ·
-    <a href="https://twitter.com/eric_brachmann">Eric Brachmann</a>
+    <a href="https://ebrach.github.io/">Eric Brachmann</a>
   </p>
   <h2 style="font-size:1.7em; margin-top: -0.5rem; margin-bottom: -0.5rem;">CVPR 2024 (Oral)</h2>  
   <h3><a href="https://nianticlabs.github.io/mickey/">Project Page</a> | <a href="https://storage.googleapis.com/niantic-lon-static/research/mickey/mickey_main_paper.pdf">Paper</a> | <a href="https://arxiv.org/abs/">arXiv</a> | <a href="https://storage.googleapis.com/niantic-lon-static/research/mickey/mickey_supp.pdf">Supplemental</a></h3>
@@ -50,7 +50,7 @@ We provide two [MicKey models](https://storage.googleapis.com/niantic-lon-static
 Extract the mickey_weights.zip file into `weights/`. In the zip file, we also provide their default configuration needed to run the evaluation. 
 
 ### Run the submission script
-Similar to Map-free code base, we provide a [submission script](benchmark/submission.py) to generate submission files:
+Similar to Map-free code base, we provide a [submission script](submission.py) to generate submission files:
 
 ```shell
 python submission.py --config path/to/config --checkpoint path/to/checkpoint --o results/your_method
@@ -69,7 +69,7 @@ python -m benchmark.mapfree --submission_path results/your_method/submission.zip
 
 
 ### Running MicKey in custom images
-We provide a [toy script](demo_inference.py) to run the relative pose estimation pipeline on custom image pairs and
+We provide a [demo script](demo_inference.py) to run the relative pose estimation pipeline on custom image pairs and
 store in `data/toy_example` two images with their respective intrinsics.
 The script computes their metric relative pose and saves the corresponding depth and keypoint score maps in the image folder.
 Run the demo script as:
