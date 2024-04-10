@@ -35,7 +35,7 @@ FEATURE_MATCHER:
 TRAINING:
   NUM_GPUS: 4
   BATCH_SIZE: 12 # BS for each dataloader (in every GPU)
-  NUM_WORKERS: 8
+  NUM_WORKERS: 12
   SAMPLER: 'scene_balance'
   N_SAMPLES_SCENE: 100
   SAMPLE_WITH_REPLACEMENT: True
@@ -51,13 +51,6 @@ DATASET:
 
   MIN_OVERLAP_SCORE: 0.4  # [train only] discard data with overlap_score < min_overlap_score
   MAX_OVERLAP_SCORE: 0.8  # [train only] discard data with overlap_score < min_overlap_score
-
-EMAT_RANSAC:
-  IT_BATCH: 250
-  PIX_THRESHOLD: 3.0
-  SCALE_THRESHOLD: 0.1
-  CONFIDENCE: 0.9999
-  MAX_ITS: 500
 
 LOSS_CLASS:
 
