@@ -27,7 +27,7 @@ def colorize_depth(value, vmin=None, vmax=None, cmap='magma_r', invalid_val=-99,
 
     return img
 
-def read_color_image(path, resize=(540, 720)):
+def read_color_image(path, resize):
     """
     Args:
         resize (tuple): align image to depthmap, in (w, h).
@@ -38,7 +38,7 @@ def read_color_image(path, resize=(540, 720)):
     cv_type = cv2.IMREAD_COLOR
     image = cv2.imread(str(path), cv_type)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    if resize:
+    if resize is not None:
         image = cv2.resize(image, resize)
 
     # (h, w, 3) -> (3, h, w) and normalized
@@ -46,7 +46,7 @@ def read_color_image(path, resize=(540, 720)):
 
     return image.unsqueeze(0)
 
-def read_intrinsics(path_intrinsics, resize=None):
+def read_intrinsics(path_intrinsics, resize):
     Ks = {}
     with Path(path_intrinsics).open('r') as f:
         for line in f.readlines():
@@ -59,7 +59,7 @@ def read_intrinsics(path_intrinsics, resize=None):
 
             K = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]], dtype=np.float32)
             if resize is not None:
-                K = correct_intrinsic_scale(K, resize[0] / W, resize[1] / H)
+                K = correct_intrinsic_scale(K, resize[0] / W, resize[1] / H).numpy()
             Ks[img_name] = K
     return Ks
 
@@ -78,11 +78,11 @@ def run_demo_inference(args):
     model = build_model(cfg, checkpoint=args.checkpoint)
 
     # Load demo images
-    im0 = read_color_image(args.im_path_ref).to(device)
-    im1 = read_color_image(args.im_path_dst).to(device)
+    im0 = read_color_image(args.im_path_ref, args.resize).to(device)
+    im1 = read_color_image(args.im_path_dst, args.resize).to(device)
 
     # Load intrinsics
-    K = read_intrinsics(args.intrinsics)
+    K = read_intrinsics(args.intrinsics, args.resize)
 
     # Prepare data for MicKey
     data = {}
@@ -121,6 +121,7 @@ if __name__ == '__main__':
     parser.add_argument('--im_path_ref', help='path to reference image', default='data/toy_example/im0.jpg')
     parser.add_argument('--im_path_dst', help='path to destination image', default='data/toy_example/im1.jpg')
     parser.add_argument('--intrinsics', help='path to intrinsics file', default='data/toy_example/intrinsics.txt')
+    parser.add_argument('--resize', nargs=2, type=int, help='resize applied to the image and intrinsics (w, h)', default=None)
     parser.add_argument('--config', help='path to config file', default='weights/mickey_weights/config.yaml')
     parser.add_argument('--checkpoint', help='path to model checkpoint',
                         default='weights/mickey_weights/mickey.ckpt')
