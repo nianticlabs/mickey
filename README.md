@@ -67,7 +67,14 @@ and evaluate it as:
 python -m benchmark.mapfree --submission_path results/your_method/submission.zip --split val
 ```
 
+### Download MicKey correspondences and depth files
+We provide the depth maps and correspondences computed by MicKey.
+- Download [MicKey depth maps](https://storage.googleapis.com/niantic-lon-static/research/map-free-reloc/assets/mickey_depths.tar.gz).
+- Download [MicKey correspondences](https://storage.googleapis.com/niantic-lon-static/research/map-free-reloc/assets/mickey_correspondences.zip).
+- Extract the contents of both files to `data/mapfree`
 
+Refer to the [Map-free benchmark](https://github.com/nianticlabs/map-free-reloc/tree/main?tab=readme-ov-file#feature-matching--scale-from-depth-baselines) to learn how to load precomputed correspondes and depth maps in their feature matching pipeline. 
+  
 ### Running MicKey in custom images
 We provide a [demo script](demo_inference.py) to run the relative pose estimation pipeline on custom image pairs.
 As an example, we store in `data/toy_example` two images with their respective intrinsics.
