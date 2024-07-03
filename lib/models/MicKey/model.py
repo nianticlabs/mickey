@@ -125,7 +125,7 @@ class MicKeyTrainingModel(pl.LightningModule):
                                  batch['kps0'], batch['kps1'], batch['depth_kp0'], batch['depth_kp1']),
                                 (probs_grad[0], outputs['kps0'].grad, outputs['kps1'].grad,
                                  outputs['depth0'].grad, outputs['depth1'].grad))
-        elif batch['depth0'].requires_grad:
+        elif batch['depth_kp0'].requires_grad:
             torch.autograd.backward((torch.log(batch['final_scores'] + 1e-16),
                                      batch['depth_kp0'], batch['depth_kp1']),
                                     (probs_grad[0], outputs['depth0'].grad, outputs['depth1'].grad))
