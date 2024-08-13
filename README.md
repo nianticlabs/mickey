@@ -88,6 +88,10 @@ python demo_inference.py --im_path_ref data/toy_example/im0.jpg \
                          --config path/to/config
 ```
 
+To generate the 3D assets as in [MicKey's webpage](https://nianticlabs.github.io/mickey/), you can turn on the
+`--generate_3D_vis` flag. This will generate a rendered image with the input images, their computed 3D camera positions,
+and the set of 3D point inliers.
+
 ## Training MicKey
 Besides the test scripts, we also provide the training code to train MicKey. 
 
@@ -110,6 +114,10 @@ Tensorboard results and checkpoints are saved into the folder `dir/to/weights/ex
 
 Note that by default, the configuration is set to use 4 GPUs. 
 You can reduce the expected number of GPUs in the config file (e.g., _NUM_GPUS: 1_). 
+
+## Changelog
+- 13 August 2024: Added visualization code.
+- 7 June 2024: Added precomputed depth maps and keypoint correspondences.
 
 ## BibTeX
 If you use this code in your research, please consider citing our paper:

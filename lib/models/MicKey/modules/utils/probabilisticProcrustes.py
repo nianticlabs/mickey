@@ -133,6 +133,10 @@ class e2eProbabilisticProcrustesSolver():
 
             best_inliers = soft_inlier_counting_3d(X_best, Y_best, R, t_metric, th=self.th_inlier)
 
+        else:
+            R = torch.zeros((B, 3, 3)).to(matches.device)
+            t_metric = torch.zeros((B, 1, 3)).to(matches.device)
+            best_inliers = torch.zeros((B)).to(matches.device)
 
         # Compute inliers set:
         if return_inliers:

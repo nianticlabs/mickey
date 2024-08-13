@@ -26,3 +26,7 @@ dependencies:
     - transforms3d==0.4.1
     - xformers==0.0.20
     - yacs==0.1.8
+    - pillow==10.0.0
+    - scipy==1.10.1
+    - pyrender==0.1.45
+    - trimesh==4.0.2
