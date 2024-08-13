@@ -135,8 +135,11 @@ If you use this code in your research, please consider citing our paper:
 Copyright © Niantic, Inc. 2024. Patent Pending. All rights reserved. This code is for non-commercial use. Please see the [license](LICENSE) file for terms.
 
 ## Acknowledgements
-We use part of the code from different repositories. We thank the authors and maintainers of the following repositories.
+We use parts of code from different repositories. We thank the authors and maintainers of the following repositories.
 - [Map-free](https://research.nianticlabs.com/mapfree-reloc-benchmark)
+- [ACE](https://github.com/nianticlabs/ace)
+- [ACE0](https://github.com/nianticlabs/acezero)
+- [DUSt3R](https://github.com/naver/dust3r)
 - [RoMa](https://github.com/Parskatt/RoMa)
 - [DINOv2](https://github.com/facebookresearch/dinov2)
 - [LoFTR](https://github.com/zju3dv/LoFTR)
