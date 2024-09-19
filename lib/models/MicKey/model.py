@@ -74,7 +74,7 @@ class MicKeyTrainingModel(pl.LightningModule):
         outputs['loss'] = avg_loss
 
         # Metric pose evaluation
-        R_ours, t_m_ours, inliers_ours = self.e2e_Procrustes.estimate_pose(batch)
+        R_ours, t_m_ours, inliers_ours = self.e2e_Procrustes.estimate_pose_vectorized(batch)
         outputs_metric_ours = pose_error_torch(R_ours, t_m_ours, batch['T_0to1'], reduce=None)
         outputs['metric_ours_t_err_ang'] = outputs_metric_ours['t_err_ang']
         outputs['metric_ours_t_err_euc'] = outputs_metric_ours['t_err_euc']
@@ -161,7 +161,7 @@ class MicKeyTrainingModel(pl.LightningModule):
                 batch_id = torch.where(outputs['mask_topk'] == 1.)[0][0].item()
 
                 # Metric pose evaluation
-                R_ours, t_m_ours, inliers_ours, inliers_list_ours = self.e2e_Procrustes.estimate_pose(batch, return_inliers=True)
+                R_ours, t_m_ours, inliers_ours, inliers_list_ours = self.e2e_Procrustes.estimate_pose_vectorized(batch, return_inliers=True)
                 outputs_metric_ours = pose_error_torch(R_ours, t_m_ours, batch['T_0to1'], reduce=None)
                 self.log('train_metric_pose/ours_t_err_ang', outputs_metric_ours['t_err_ang'].mean().detach())
                 self.log('train_metric_pose/ours_t_err_euc', outputs_metric_ours['t_err_euc'].mean().detach())

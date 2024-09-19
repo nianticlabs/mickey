@@ -100,6 +100,14 @@ We provide two default configurations in `config/MicKey/`:
    It hence does not use any image overlapping information but only relative ground truth poses during training. 
   * _overlap_score.yaml_: This configuration relies on the image overlapping information to only choose solvable image pairs during training.
 
+Besides the two default configurations, we also provide a configuration to speed up their training.
+These configurations use low-resolution images and do not add the null hypothesis (refer to Section 3.1.4 for details).
+We recommend initializing MicKey with these configurations and then
+fine-tuning the network with the default ones (which use high-resolution images and the null hypothesis).
+They can be found under `config/MicKey/`:
+  * _curriculum_learning_warm_up.yaml_
+  * _overlap_score_warm_up.yaml_
+
 To train MicKey default model, use:
 ```shell
 python train.py --config config/MicKey/curriculum_learning.yaml \
@@ -116,6 +124,7 @@ Note that by default, the configuration is set to use 4 GPUs.
 You can reduce the expected number of GPUs in the config file (e.g., _NUM_GPUS: 1_). 
 
 ## Changelog
+- 19 September 2024: Added vectorized RANSAC and warm up configurations.
 - 13 August 2024: Added visualization code.
 - 7 June 2024: Added precomputed depth maps and keypoint correspondences.
 

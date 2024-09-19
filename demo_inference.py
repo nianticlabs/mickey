@@ -113,7 +113,6 @@ def run_demo_inference(args):
     # data['R'] = R
     # data['t'] = t
     # data['inliers'] = inliers
-    # data['inliers_list'] = inliers_list
 
     print('Saving depth and score maps in image directory ...')
     depth0_map = colorize_depth(data['depth0_map'][batch_id], invalid_mask=(data['depth0_map'][batch_id] < 0.001).cpu()[0])

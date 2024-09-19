@@ -34,7 +34,7 @@ FEATURE_MATCHER:
 
 TRAINING:
   NUM_GPUS: 4
-  BATCH_SIZE: 8 # BS for each dataloader (in every GPU)
+  BATCH_SIZE: 24 # BS for each dataloader (in every GPU)
   NUM_WORKERS: 8
   SAMPLER: 'scene_balance'
   N_SAMPLES_SCENE: 100
@@ -46,11 +46,11 @@ TRAINING:
   EPOCHS: 100
 
 DATASET:
-  HEIGHT: 720
-  WIDTH: 540
+  HEIGHT: 480
+  WIDTH: 360
 
-  MIN_OVERLAP_SCORE: 0.4  # [train only] discard data with overlap_score < min_overlap_score
-  MAX_OVERLAP_SCORE: 0.8  # [train only] discard data with overlap_score < min_overlap_score
+  MIN_OVERLAP_SCORE: 0.0  # [train only] discard data with overlap_score < min_overlap_score
+  MAX_OVERLAP_SCORE: 1.0  # [train only] discard data with overlap_score < min_overlap_score
 
 LOSS_CLASS:
 
@@ -74,12 +74,12 @@ LOSS_CLASS:
     NUM_CORR_3d3d: 8 # Bigger number of 3d-3d correspondences helps stability
 
   NULL_HYPOTHESIS:
-    ADD_NULL_HYPOTHESIS: True
+    ADD_NULL_HYPOTHESIS: False
     TH_OUTLIERS: 0.35
 
   CURRICULUM_LEARNING:
-    TRAIN_CURRICULUM: False # It indicates if MicKey should be trained with curriculum learning
-    TRAIN_WITH_TOPK: False # It indicates if MicKey should be trained only with top image pairs
+    TRAIN_CURRICULUM: True # It indicates if MicKey should be trained with curriculum learning
+    TRAIN_WITH_TOPK: True # It indicates if MicKey should be trained only with top image pairs
     TOPK_INIT: 30
     TOPK: 80
 
@@ -94,3 +94,4 @@ PROCRUSTES:
   NUM_REFINEMENTS: 4
   TH_INLIER: 0.15
   TH_SOFT_INLIER: 0.3
+

@@ -79,7 +79,7 @@ def eval(args):
         cfg.TRAINING.NUM_WORKERS = 8
         dataloader = DataModule(cfg, drop_last_val=False).test_dataloader()
     elif args.split == 'val':
-        cfg.TRAINING.BATCH_SIZE = 16
+        cfg.TRAINING.BATCH_SIZE = 12
         cfg.TRAINING.NUM_WORKERS = 8
         dataloader = DataModule(cfg, drop_last_val=False).val_dataloader()
     else:

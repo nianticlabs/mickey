@@ -23,7 +23,7 @@ def ess_sq_euclidean_error(E, Egt):
     Egt_norm = Egt/Egt[:, 2, 2].view(B, 1, 1)
     return torch.pow(E_norm-Egt_norm, 2).view(B, -1).sum(1)
 
-def compute_pose_loss(R, t, Rgt_i, tgt_i, K=None, soft_clipping=True):
+def compute_pose_loss(R, t, Rgt_i, tgt_i, K0=None, K1=None, soft_clipping=True):
     loss_rot, rot_err = rot_angle_loss(R, Rgt_i)
     loss_trans = trans_l1_loss(t, tgt_i)
 
@@ -37,19 +37,31 @@ def compute_pose_loss(R, t, Rgt_i, tgt_i, K=None, soft_clipping=True):
 
     return loss, loss_rot, loss_trans
 
-def compute_vcre_loss(R, t, Rgt_i, tgt_i, K=None, soft_clipping=True):
+def compute_vcre_loss(R, t, Rgt, tgt, K0, K1, soft_clipping=True):
 
     B = R.shape[0]
     Tgt = torch.zeros((B, 4, 4)).float().to(R.device)
-    Tgt[:, :3, :3] = Rgt_i
-    Tgt[:, :3, 3:] = tgt_i.transpose(2, 1)
+    Tgt[:, :3, :3] = Rgt
+    Tgt[:, :3, 3:] = tgt.transpose(2, 1)
 
-    loss = vcre_loss(R, t, Tgt, K)
+    # Inv pose:
+    R_inv = R.transpose(2, 1)
+    t_inv = (-1 * R_inv @ t.transpose(2, 1)).transpose(2, 1)
+    Tgt_inv = torch.zeros((B, 4, 4)).float().to(R.device)
+    Rgt_inv = Rgt.transpose(2, 1)
+    tgt_inv = (-1 * Rgt_inv @ tgt.transpose(2, 1)).transpose(2, 1)
+    Tgt_inv[:, :3, :3] = Rgt_inv
+    Tgt_inv[:, :3, 3:] = tgt_inv.transpose(2, 1)
+
+    loss0 = vcre_loss(R, t, Tgt, K0)
+    loss1 = vcre_loss(R_inv, t_inv, Tgt_inv, K1)
+
+    loss = (loss1 + loss0) / 2.
     if soft_clipping:
-        loss = torch.tanh(loss/80)
+        loss = torch.tanh(loss / 80)
 
-    loss_rot, rot_err = rot_angle_loss(R, Rgt_i)
-    loss_trans = trans_l1_loss(t, tgt_i)
+    loss_rot, rot_err = rot_angle_loss(R, Rgt)
+    loss_trans = trans_l1_loss(t, tgt)
 
     return loss, loss_rot, loss_trans
 
