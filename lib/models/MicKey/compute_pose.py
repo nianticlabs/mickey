@@ -17,21 +17,22 @@ class MickeyRelativePose(pl.LightningModule):
 
         self.is_eval_model(True)
 
-    def forward(self, data):
+    def forward(self, data, return_inliers=False):
 
         self.compute_matches(data)
         data['final_scores'] = data['scores'] * data['kp_scores']
 
-        # Returns inliers list:
-        # R, t, inliers, inliers_list = self.e2e_Procrustes.estimate_pose_vectorized(data, return_inliers=True)
-
-        # If the inlier list is not needed:
-        R, t, inliers = self.e2e_Procrustes.estimate_pose_vectorized(data, return_inliers=False)
+        if return_inliers:
+            # Returns inliers list:
+            R, t, inliers, inliers_list = self.e2e_Procrustes.estimate_pose_vectorized(data, return_inliers=True)
+            data['inliers_list'] = inliers_list
+        else:
+            # If the inlier list is not needed:
+            R, t, inliers = self.e2e_Procrustes.estimate_pose_vectorized(data, return_inliers=False)
 
         data['R'] = R
         data['t'] = t
         data['inliers'] = inliers
-        # data['inliers_list'] = inliers_list
 
         return R, t
 

@@ -99,15 +99,17 @@ def run_demo_inference(args):
 
     # Prepare data for MicKey
     batch_id = 0
+    im0_name = args.im_path_ref.split('/')[-1]
+    im1_name = args.im_path_dst.split('/')[-1]
     data = {}
     data['image0'] = im0
     data['image1'] = im1
-    data['K_color0'] = torch.from_numpy(K['im0.jpg']).unsqueeze(0).to(device)
-    data['K_color1'] = torch.from_numpy(K['im1.jpg']).unsqueeze(0).to(device)
+    data['K_color0'] = torch.from_numpy(K[im0_name]).unsqueeze(0).to(device)
+    data['K_color1'] = torch.from_numpy(K[im1_name]).unsqueeze(0).to(device)
 
     # Run inference
     print('Running MicKey relative pose estimation...')
-    model(data)
+    model(data, return_inliers=args.generate_3D_vis)
 
     # Pose, inliers and score are stored in:
     # data['R'] = R
